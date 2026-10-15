@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La Porcada × Aman — Propuesta de Explotación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --forest:#1a2820;
+    --forest-deep:#0f1813;
+    --cream:#f4ede0;
+    --cream-warm:#ebe1cc;
+    --bronze:#a07d4e;
+    --bronze-light:#c9a878;
+    --sage:#7a8970;
+    --charcoal:#2a2823;
+    --stone:#8a8378;
+  }
+  *{ -webkit-font-smoothing:antialiased; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:'Montserrat', sans-serif;
+    background:var(--cream);
+    color:var(--charcoal);
+    font-weight:300;
+    letter-spacing:0.02em;
+  }
+  .serif{ font-family:'Cormorant Garamond', serif; }
+  .display{ font-family:'Cormorant Garamond', serif; font-weight:300; letter-spacing:-0.01em; }
+
+  .hero-video-wrap{
+    position:relative;
+    width:100%;
+    height:100vh;
+    overflow:hidden;
+    background:#000;
+  }
+  .hero-video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    transition:opacity 1.2s ease-in-out;
+  }
+  .fade-mask{
+    position:absolute; inset:0;
+    background:#000;
+    opacity:1;
+    pointer-events:none;
+    z-index:5;
+  }
+  .hero-vignette{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at center, rgba(0,0,0,0) 35%, rgba(0,0,0,0.55) 100%),
+      linear-gradient(to bottom, rgba(15,24,19,0.45) 0%, rgba(15,24,19,0.15) 40%, rgba(15,24,19,0.75) 100%);
+    z-index:6;
+    pointer-events:none;
+  }
+  .hero-content{
+    position:relative;
+    z-index:10;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:2.5rem 4rem;
+  }
+  @media (max-width:768px){
+    .hero-content{ padding:1.5rem 1.5rem; }
+  }
+
+  .grain::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity:0.35;
+    mix-blend-mode:overlay;
+    pointer-events:none;
+    z-index:7;
+  }
+
+  .lang-btn{
+    border:1px solid rgba(244,237,224,0.35);
+    color:var(--cream);
+    backdrop-filter:blur(8px);
+    background:rgba(15,24,19,0.25);
+    transition:all .35s ease;
+    font-size:11px;
+    letter-spacing:0.25em;
+    text-transform:uppercase;
+  }
+  .lang-btn:hover{
+    background:var(--bronze);
+    border-color:var(--bronze);
+    color:var(--cream);
+  }
+  .lang-btn.active{
+    background:var(--cream);
+    color:var(--forest-deep);
+    border-color:var(--cream);
+  }
+
+  .section-pad{ padding:8rem 2rem; }
+  @media (max-width:768px){ .section-pad{ padding:5rem 1.25rem; } }
+
+  .eyebrow{
+    font-size:11px;
+    letter-spacing:0.4em;
+    text-transform:uppercase;
+    color:var(--bronze);
+    font-weight:500;
+  }
+  .rule{
+    height:1px;
+    background:linear-gradient(to right, transparent, var(--bronze) 50%, transparent);
+    width:80px;
+  }
+
+  .reason-row{
+    display:grid;
+    grid-template-columns:80px 1fr 1.2fr;
+    gap:3rem;
+    padding:3rem 0;
+    border-top:1px solid rgba(42,40,35,0.15);
+    transition:background .5s ease, padding .5s ease;
+  }
+  .reason-row:last-child{ border-bottom:1px solid rgba(42,40,35,0.15); }
+  .reason-row:hover{
+    background:rgba(160,125,78,0.04);
+  }
+  .reason-row:hover .reason-num{
+    color:var(--bronze);
+    transform:translateX(-6px);
+  }
+  .reason-num{
+    font-family:'Cormorant Garamond', serif;
+    font-size:3.5rem;
+    font-weight:300;
+    color:var(--stone);
+    line-height:1;
+    transition:all .5s ease;
+  }
+  @media (max-width:768px){
+    .reason-row{
+      grid-template-columns:1fr;
+      gap:1rem;
+      padding:2rem 0;
+    }
+    .reason-num{ font-size:2.2rem; }
+  }
+
+  .pillar{
+    position:relative;
+    padding:2.5rem 2rem;
+    background:var(--forest-deep);
+    color:var(--cream);
+    overflow:hidden;
+    transition:transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .pillar:hover{ transform:translateY(-6px); }
+  .pillar::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:2px;
+    background:var(--bronze);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .6s ease;
+  }
+  .pillar:hover::before{ transform:scaleX(1); }
+  .pillar-tag{
+    font-size:10px;
+    letter-spacing:0.35em;
+    color:var(--bronze-light);
+    text-transform:uppercase;
+  }
+
+  .quote-block{
+    position:relative;
+    padding:6rem 3rem;
+    background:var(--forest);
+    color:var(--cream);
+    overflow:hidden;
+  }
+  .quote-block::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:url("https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1600&q=80");
+    background-size:cover;
+    background-position:center;
+    opacity:0.18;
+    mix-blend-mode:luminosity;
+  }
+
+  .marquee{
+    overflow:hidden;
+    white-space:nowrap;
+    border-top:1px solid rgba(244,237,224,0.15);
+    border-bottom:1px solid rgba(244,237,224,0.15);
+    background:var(--forest-deep);
+    color:var(--cream-warm);
+    padding:1.4rem 0;
+  }
+  .marquee-inner{
+    display:inline-block;
+    animation:scroll 38s linear infinite;
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.4rem;
+    font-style:italic;
+    letter-spacing:0.05em;
+  }
+  @keyframes scroll{
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-50%); }
+  }
+  .marquee-inner span{ padding:0 2.5rem; }
+  .marquee-inner span::before{
+    content:"✦";
+    color:var(--bronze);
+    margin-right:2.5rem;
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(30px);
+    transition:opacity 1s ease, transform 1s ease;
+  }
+  .reveal.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  footer{
+    background:var(--forest-deep);
+    color:var(--cream-warm);
+    padding:5rem 2rem 2rem;
+  }
+  .footer-logo{
+    font-family:'Cormorant Garamond', serif;
+    font-size:2.4rem;
+    font-weight:300;
+    letter-spacing:0.05em;
+  }
+
+  ::-webkit-scrollbar{ width:8px; }
+  ::-webkit-scrollbar-track{ background:var(--cream-warm); }
+  ::-webkit-scrollbar-thumb{ background:var(--bronze); }
+
+  .logo-mark{
+    width:60px; height:60px;
+    object-fit:contain;
+    filter:brightness(0) invert(1);
+    opacity:0.95;
+  }
+
+  .cta-aman{
+    display:inline-flex;
+    align-items:center;
+    gap:0.8rem;
+    padding:1rem 2rem;
+    border:1px solid var(--bronze);
+    color:var(--bronze);
+    font-size:11px;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    transition:all .4s ease;
+  }
+  .cta-aman:hover{
+    background:var(--bronze);
+    color:var(--cream);
+  }
+
+  .corner-mark{
+    position:absolute;
+    width:24px; height:24px;
+    border-color:var(--bronze);
+  }
+  .corner-tl{ top:0; left:0; border-top:1px solid; border-left:1px solid; }
+  .corner-tr{ top:0; right:0; border-top:1px solid; border-right:1px solid; }
+  .corner-bl{ bottom:0; left:0; border-bottom:1px solid; border-left:1px solid; }
+  .corner-br{ bottom:0; right:0; border-bottom:1px solid; border-right:1px solid; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- HERO WITH VIDEO FADER (9s LOOP)                              -->
+<!-- ============================================================ -->
+<section class="hero-video-wrap grain">
+  <video class="hero-video" id="heroVideo" autoplay muted playsinline preload="auto">
+    <source src="images/PLAYAPORCADA.mp4" type="video/mp4" />
+  </video>
+  <div class="fade-mask" id="fadeMask"></div>
+  <div class="hero-vignette"></div>
+
+  <div class="hero-content">
+    <!-- Top bar -->
+    <div class="flex items-start justify-between">
+      <div class="flex items-center gap-4">
+        <img src="images/LOGO.png" alt="TAKYMA" class="logo-mark" />
+        <div class="text-cream" style="color:var(--cream);">
+          <div class="serif text-xl leading-none">Takyma</div>
+          <div class="text-[10px] tracking-[0.3em] uppercase opacity-70 mt-1">Investment Pioneer</div>
+        </div>
+      </div>
+
+      <!-- Translation toggle -->
+      <div class="flex gap-2">
+        <button class="lang-btn active px-3 py-2" data-lang="es">ES</button>
+        <button class="lang-btn px-3 py-2" data-lang="en">EN</button>
+      </div>
+    </div>
+
+    <!-- Center title -->
+    <div class="flex-1 flex flex-col justify-center items-center text-center" style="color:var(--cream);">
+      <div class="eyebrow mb-6" style="color:var(--bronze-light);" data-i18n="hero.eyebrow">Propuesta de explotación · 2026</div>
+      <h1 class="display text-[clamp(3rem,9vw,8rem)] leading-[0.95] mb-6">
+        La Porcada <span class="italic font-light" style="color:var(--bronze-light);">×</span> Aman
+      </h1>
+      <p class="serif italic text-xl md:text-2xl max-w-2xl opacity-80" data-i18n="hero.sub">
+        Cuando la naturaleza dicta la arquitectura, el lujo encuentra su forma más honesta.
+      </p>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="flex items-end justify-between text-[11px] tracking-[0.3em] uppercase" style="color:var(--cream);">
+      <div class="opacity-70">
+        <span data-i18n="hero.loc1">Panamá</span> ·<br/>
+        <span class="opacity-60" data-i18n="hero.loc2">Isla Porcada · Chiriquí</span>
+      </div>
+      <div class="hidden md:block opacity-60 serif italic normal-case tracking-normal text-sm" data-i18n="hero.tag">
+        « Diez razones para confiar la explotación al guardián correcto »
+      </div>
+      <div class="opacity-70 text-right">
+        EcoResort · CLT · Steel · Epoxy<br/>
+        <span class="opacity-60">© 2026 Takyma</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- MARQUEE                                                      -->
+<!-- ============================================================ -->
+<div class="marquee">
+  <div class="marquee-inner">
+    <span data-i18n="marq1">Respeto absoluto por el entorno</span>
+    <span data-i18n="marq2">Arquitectura sostenible CLT</span>
+    <span data-i18n="marq3">Acero galvanizado</span>
+    <span data-i18n="marq4">Epoxy marino</span>
+    <span data-i18n="marq5">Lujo silencioso</span>
+    <span data-i18n="marq1">Respeto absoluto por el entorno</span>
+    <span data-i18n="marq2">Arquitectura sostenible CLT</span>
+    <span data-i18n="marq3">Acero galvanizado</span>
+    <span data-i18n="marq4">Epoxy marino</span>
+    <span data-i18n="marq5">Lujo silencioso</span>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MANIFESTO                                                    -->
+<!-- ============================================================ -->
+<section class="section-pad" style="background:var(--cream);">
+  <div class="max-w-5xl mx-auto reveal">
+    <div class="eyebrow mb-4" data-i18n="man.eyebrow">Manifiesto</div>
+    <div class="rule mb-10"></div>
+    <h2 class="display text-4xl md:text-6xl leading-[1.05] mb-10" style="color:var(--forest);">
+      <span data-i18n="man.h1">No buscamos un operador.</span><br/>
+      <em class="italic" style="color:var(--bronze);" data-i18n="man.h2">Buscamos un guardián.</em>
+    </h2>
+    <div class="grid md:grid-cols-2 gap-10 text-base leading-relaxed" style="color:var(--charcoal);">
+      <p data-i18n="man.p1">
+        Tras desarrollar íntegramente el proyecto de La Porcada —desde la topografía hasta el último perno de acero galvanizado— ha llegado el momento de elegir quién respirará vida sobre esta estructura. Y la respuesta, después de analizar el mercado, solo tiene un nombre: <strong>Aman</strong>.
+      </p>
+      <p data-i18n="man.p2">
+        No es una cuestión de prestigio. Es una cuestión de coherencia. Amanera, el resort que Aman explota en República Dominicana, ya demostró que el trópico acepta —y celebra— una forma de hospitalidad donde la naturaleza no se domestica, se reverencia. La Porcada, en Isla Porcada (Chiriquí, Panamá), encaja en esa misma narrativa como un anillo al dedo.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- THE 10 REASONS                                               -->
+<!-- ============================================================ -->
+<section class="section-pad" style="background:var(--cream-warm);">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="mb-20 reveal">
+      <div class="eyebrow mb-4" data-i18n="reasons.eyebrow">Las diez razones</div>
+      <div class="rule mb-6"></div>
+      <h2 class="display text-5xl md:text-7xl leading-[1] mb-6" style="color:var(--forest);">
+        <span data-i18n="reasons.h1">Por qué Aman debe ser</span><br/>
+        <em class="italic" style="color:var(--bronze);" data-i18n="reasons.h2">nuestro explotador.</em>
+      </h2>
+    </div>
+
+    <div class="reveal">
+
+      <!-- 01 -->
+      <div class="reason-row">
+        <div class="reason-num">01</div>
+        <div>
+          <h3 class="serif text-2xl md:text-3xl mb-2" style="color:var(--forest);" data-i18n="r1.t">Sinergia filosófica con el entorno</h3>
+          <div class="eyebrow" data-i18n="r1.s">Principio rector compartido</div>
+        </div>
+        <p class="text-sm leading-relaxed" data-i18n="r1.b">
+          Aman construye <em>solo donde la naturaleza lo permite</em>. En Amanera (República Dominicana), las villas se acoplan a la topografía en lugar de imponerse a ella. La Porcada nace del mismo principio: el terreno manda, la arquitectura obedece. Cualquier otro explotador exigiría explanar; Aman entendería por qué no lo hicimos.
+        </p>
+      </div>
+
+      <!-- 02 -->
+      <div class="reason-row">
+        <div class="reason-num">02</div>
+        <div>
+          <h3 class="serif text-2xl md:text-3xl mb-2" style="color:var(--forest);" data-i18n="r2.t">Amanera validó el modelo tropical</h3>
+          <div class="eyebrow" data-i18n="r2.s">Referente operativo vivo</div>
+        </div>
+        <p class="text-sm leading-relaxed" data-i18n="r2.b">
+          El resort de Playa Grande, en República Dominicana, demostró que el lujo consciente funciona en el trópico. Tasa de ocupación premium, REVPAR superior al segmento, fidelidad de cliente recurrente. La Porcada hereda ese aprendizaje sin el coste del ensayo-error. El mercado ya está educado.
+        </p>
+      </div>
+
+      <!-- 03 -->
+      <div class="reason-row">
+        <div class="reason-num">03</div>
+        <div>
+          <h3 class="serif text-2xl md:text-3xl mb-2" style="color:var(--forest);" data-i18n="r3.t">Lenguaje material compatible</h3>
+          <div class="eyebrow" data-i18n="r3.s">CLT · Acero galvanizado · Epoxy</div>
+        </div>
+        <p class="text-sm leading-relaxed" data-i18n="r3.b">
+          Aman usa madera, piedra y acero como lenguaje. Nuestras tres patas del tamburete —CLT estructural, acero galvanizado contra el salitre, epoxy marino protector— conversan con esa misma estética material. No hay que disfrazar nada: lo que construimos es exactamente lo que Aman mostraría.
+        </p>
+      </div>
+
+      <!-- 04 -->
+      <div class="reason-row">
+        <div class="reason-num">04</div>
+        <div>
+          <h3 class="serif text-2xl md:text-3xl mb-2" style="color:var(--forest);" data-i18n="r4.t">Cliente que paga por silencio</h3>
+          <div class="eyebrow" data-i18n="r4.s">Perfil Aman = perfil La Porcada</div>
+        </div>
+        <p class="text-sm leading-relaxed" data-i18n="r4.b">
+          El huésped Aman no busca animación, busca ausencia de ruido. Paga por la discreción, por el espacio, por la posibilidad de no ver a otro huésped durante una semana. La Porcada, con su isla virgen de acceso restringido y su baja densidad, está construida para ese mismo cliente.
+        </p>
+      </div>
+
+      <!-- 05 -->
+      <div class="reason-row">
+        <div class="reason-num">05</div>
+        <div>
+          <h3 class="serif text-2xl md:text-3xl mb-2" style="color:var(--forest);" data-i18n="r5.t">Acceso a una red global cautiva</h3>
+          <div class="eyebrow" data-i18n="r5.s">Distribución inmediata</div>
+        </div>
+        <p class="text-sm leading-relaxed" data-i18n="r5.b">
+          Aman cuenta con una base de clientes recurrentes que viajan entre sus 34 propiedades. Un nuevo destino no se lanza al vacío: se ofrece a quienes ya esperan la siguiente apertura. La Porcada entraría en circulación el día uno con demanda preexistente.
+        </p>
+      </div>
+
+      <!-- 06 -->
+      <div class="reason-row">
+        <div class="reason-num">06</div>
+        <div>
+          <h3 class="serif text-2xl md:text-3xl mb-2" style="color:var(--forest);" data-i18n="r6.t">Operación de clase mundial</h3>
+          <div class="eyebrow" data-i18n="r6.s">Estándar no negociable</div>
+        </div>
+        <p class="text-sm leading-relaxed" data-i18n="r6.b">
+          La marca La Porcada puede construir la mejor infraestructura de Panamá, pero sin un operador de primer nivel, la experiencia se diluye en el día a día. Aman garantiza que el huésped reciba lo que promete el edificio. Sin esa traducción, el activo pierde valor.
+        </p>
+      </div>
+
+      <!-- 07 -->
+      <div class="reason-row">
+        <div class="reason-num">07</div>
+        <div>
+          <h3 class="serif text-2xl md:text-3xl mb-2" style="color:var(--forest);" data-i18n="r7.t">Respeto por la baja densidad</h3>
+          <div class="eyebrow" data-i18n="r7.s">Anti-megaresort por convicción</div>
+        </div>
+        <p class="text-sm leading-relaxed" data-i18n="r7.b">
+          Donde otros operadores exigen 300 llaves para rentabilizar, Aman opera propiedades íntimas. La Porcada, con su huella deliberadamente pequeña, no podría tolerar la presión de un operador masivo. Aman es de los pocos que puede hacer rentable la contención.
+        </p>
+      </div>
+
+      <!-- 08 -->
+      <div class="reason-row">
+        <div class="reason-num">08</div>
+        <div>
+          <h3 class="serif text-2xl md:text-3xl mb-2" style="color:var(--forest);" data-i18n="r8.t">Narrativa de turismo regenerativo</h3>
+          <div class="eyebrow" data-i18n="r8.s">Más allá de lo sostenible</div>
+        </div>
+        <p class="text-sm leading-relaxed" data-i18n="r8.b">
+          Aman no se queda en "no dañar": deja el lugar mejor de lo que lo encontró. La Porcada, con su construcción en CLT (carbono negativo), su acero galvanizado reciclable y su epoxy libre de VOCs, ofrece el cuerpo físico para que esa narrativa sea verdad y no greenwashing.
+        </p>
+      </div>
+
+      <!-- 09 -->
+      <div class="reason-row">
+        <div class="reason-num">09</div>
+        <div>
+          <h3 class="serif text-2xl md:text-3xl mb-2" style="color:var(--forest);" data-i18n="r9.t">Valorización del activo a largo plazo</h3>
+          <div class="eyebrow" data-i18n="r9.s">Marca como activo patrimonial</div>
+        </div>
+        <p class="text-sm leading-relaxed" data-i18n="r9.b">
+          Un edificio explotado por Aman se revaloriza con el tiempo, no se deprecia. La marca se convierte en garantía colateral. Para Takyma Investment Pioneer, ceder la explotación a Aman significa transformar un activo inmobiliario en un activo de marca, líquido y transferible.
+        </p>
+      </div>
+
+      <!-- 10 -->
+      <div class="reason-row">
+        <div class="reason-num">10</div>
+        <div>
+          <h3 class="serif text-2xl md:text-3xl mb-2" style="color:var(--forest);" data-i18n="r10.t">Es la única opción coherente</h3>
+          <div class="eyebrow" data-i18n="r10.s">Conclusión lógica</div>
+        </div>
+        <p class="text-sm leading-relaxed" data-i18n="r10.b">
+          Si revisamos las diez razones anteriores, ninguna apunta a otro operador. La combinación de respeto ambiental, lenguaje material sostenible, cliente silencioso y rentabilidad en baja densidad solo cierra con Aman. Cualquier otra elección sería un compromiso. Y La Porcada no nació para comprometerse.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- AMANERA QUOTE BLOCK                                          -->
+<!-- ============================================================ -->
+<section class="quote-block grain">
+  <div class="max-w-5xl mx-auto relative z-10 reveal">
+    <div class="eyebrow mb-6" style="color:var(--bronze-light);" data-i18n="aq.eyebrow">El precedente · Amanera · República Dominicana</div>
+    <blockquote class="display text-3xl md:text-5xl leading-[1.15] mb-8" style="color:var(--cream);">
+      <span data-i18n="aq.q1">« En Amanera, el edificio no se impone al acantilado:</span><br/>
+      <em class="italic" style="color:var(--bronze-light);" data-i18n="aq.q2">lo habita.</em> <span data-i18n="aq.q3">Esa es exactamente la vocación de La Porcada en Panamá. »</span>
+    </blockquote>
+    <div class="flex flex-wrap items-center gap-6">
+      <a href="https://www.aman.com/es/resorts/amanera/gallery" target="_blank" rel="noopener" class="cta-aman" style="color:var(--bronze-light); border-color:var(--bronze-light);">
+        <span data-i18n="aq.cta">Ver Amanera (R. Dominicana)</span>
+        <span>→</span>
+      </a>
+      <a href="https://villazeroporcada.netlify.app/" target="_blank" rel="noopener" class="cta-aman" style="color:var(--cream); border-color:rgba(244,237,224,0.4);">
+        <span data-i18n="aq.cta2">Ver La Porcada (Panamá)</span>
+        <span>→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PILLARS — THREE LEGS                                         -->
+<!-- ============================================================ -->
+<section class="section-pad" style="background:var(--cream);">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-16 reveal text-center">
+      <div class="eyebrow mb-4" data-i18n="pil.eyebrow">Las tres patas del tamburete</div>
+      <div class="rule mx-auto mb-6"></div>
+      <h2 class="display text-4xl md:text-6xl leading-[1.05]" style="color:var(--forest);">
+        <span data-i18n="pil.h1">Construcción sostenible,</span><br/>
+        <em class="italic" style="color:var(--bronze);" data-i18n="pil.h2">no decorativa.</em>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-px reveal" style="background:rgba(160,125,78,0.25);">
+
+      <!-- CLT -->
+      <div class="pillar">
+        <span class="corner-mark corner-tl"></span>
+        <span class="corner-mark corner-br"></span>
+        <div class="pillar-tag mb-6">01 / CLT</div>
+        <h3 class="display text-3xl mb-4" data-i18n="clt.t">Cross-Laminated Timber</h3>
+        <p class="text-sm leading-relaxed opacity-85" data-i18n="clt.b">
+          Madera estructural de carbono negativo. Cada metro cuadrado de CLT secuestra CO₂ en lugar de emitirlo. La estructura respira con el clima, no lo combate. Es el esqueleto que Aman reconocería como propio.
+        </p>
+        <div class="mt-8 serif italic text-sm" style="color:var(--bronze-light);" data-i18n="clt.tag">
+          −1.6 t CO₂ / m²
+        </div>
+      </div>
+
+      <!-- GALVANIZED STEEL -->
+      <div class="pillar">
+        <span class="corner-mark corner-tl"></span>
+        <span class="corner-mark corner-br"></span>
+        <div class="pillar-tag mb-6">02 / Acero galvanizado</div>
+        <h3 class="display text-3xl mb-4" data-i18n="st.t">Acero galvanizado en caliente</h3>
+        <p class="text-sm leading-relaxed opacity-85" data-i18n="st.b">
+          El salitre del Pacífico panameño corroe todo lo que toca. El galvanizado en caliente garantiza cincuenta años de integridad estructural sin mantenimiento agresivo. Hueso industrial, piel eterna.
+        </p>
+        <div class="mt-8 serif italic text-sm" style="color:var(--bronze-light);" data-i18n="st.tag">
+          50+ años de vida útil
+        </div>
+      </div>
+
+      <!-- EPOXY -->
+      <div class="pillar">
+        <span class="corner-mark corner-tl"></span>
+        <span class="corner-mark corner-br"></span>
+        <div class="pillar-tag mb-6">03 / Epoxy marino</div>
+        <h3 class="display text-3xl mb-4" data-i18n="ep.t">Recubrimiento epoxy</h3>
+        <p class="text-sm leading-relaxed opacity-85" data-i18n="ep.b">
+          Barrera química libre de VOCs, impermeable a la humedad, resistente a UV. Protege el acero, sella las juntas, garantiza la higiene. La tercera pata que convierte un detalle técnico en estándar Aman.
+        </p>
+        <div class="mt-8 serif italic text-sm" style="color:var(--bronze-light);" data-i18n="ep.tag">
+          0 VOC · 100% estanqueidad
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-16 text-center reveal">
+      <p class="serif italic text-xl md:text-2xl max-w-3xl mx-auto" style="color:var(--stone);" data-i18n="pil.close">
+        « Tres materiales, tres principios, una sola promesa: lo que se construye aquí, durará. »
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VISUAL FEATURE IMAGE                                         -->
+<!-- ============================================================ -->
+<section class="relative" style="height:60vh; min-height:480px;">
+  <img src="images/ECORESORT.png" alt="EcoResort La Porcada" class="absolute inset-0 w-full h-full object-cover" />
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom, rgba(15,24,19,0.3), rgba(15,24,19,0.7));"></div>
+  <div class="relative z-10 h-full flex flex-col justify-end items-center text-center px-6 pb-16" style="color:var(--cream);">
+    <div class="eyebrow mb-4" style="color:var(--bronze-light);" data-i18n="vis.eyebrow">La Porcada · Isla Porcada · Chiriquí · Panamá</div>
+    <h2 class="display text-4xl md:text-6xl leading-[1] max-w-3xl" data-i18n="vis.h">
+      Donde el bosque se encuentra con el mar,<br/><em class="italic" style="color:var(--bronze-light);">y la arquitectura se rinde.</em>
+    </h2>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CLOSING CALL                                                 -->
+<!-- ============================================================ -->
+<section class="section-pad" style="background:var(--forest); color:var(--cream);">
+  <div class="max-w-4xl mx-auto text-center reveal">
+    <div class="eyebrow mb-6" style="color:var(--bronze-light);" data-i18n="close.eyebrow">Cierre</div>
+    <h2 class="display text-4xl md:text-7xl leading-[1.05] mb-10">
+      <span data-i18n="close.h1">Hemos construido el cuerpo.</span><br/>
+      <em class="italic" style="color:var(--bronze-light);" data-i18n="close.h2">Aman, ponle el alma.</em>
+    </h2>
+    <p class="serif italic text-lg md:text-xl opacity-80 max-w-2xl mx-auto" data-i18n="close.p">
+      La Porcada está lista. El CLT está cortado, el acero galvanizado, el epoxy curado. Solo falta quien sepa habitarlo. Y ese nombre, lo sabemos desde el primer plano, siempre fue Aman.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FOOTER                                                       -->
+<!-- ============================================================ -->
+<footer>
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-10 mb-12 pb-10" style="border-bottom:1px solid rgba(244,237,224,0.15);">
+      <div>
+        <img src="images/LOGO.png" alt="Takyma" class="logo-mark mb-4" />
+        <div class="footer-logo" style="color:var(--cream);">Takyma</div>
+        <div class="text-[10px] tracking-[0.35em] uppercase opacity-60 mt-2" data-i18n="foot.tag">Investment Pioneer</div>
+      </div>
+      <div class="text-right text-[11px] tracking-[0.25em] uppercase opacity-70 leading-relaxed">
+        <div data-i18n="foot.l1">Isla Porcada · Chiriquí</div>
+        <div data-i18n="foot.l2">Panamá</div>
+        <div class="mt-3 opacity-60">CLT · Steel · Epoxy</div>
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] tracking-[0.2em] uppercase opacity-60">
+      <div>© 2026 EcoResort La Porcada · by Takyma Investment Pioneer</div>
+      <div class="serif italic normal-case tracking-normal text-sm opacity-80" data-i18n="foot.motto">
+        « La naturaleza no se domestica, se reverencia. »
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================ -->
+<!-- SCRIPTS                                                      -->
+<!-- ============================================================ -->
+<script>
+/* ============ I18N ============ */
+const translations = {
+  es: {
+    "hero.eyebrow":"Propuesta de explotación · 2026",
+    "hero.sub":"Cuando la naturaleza dicta la arquitectura, el lujo encuentra su forma más honesta.",
+    "hero.loc1":"Panamá",
+    "hero.loc2":"Isla Porcada · Chiriquí",
+    "hero.tag":"« Diez razones para confiar la explotación al guardián correcto »",
+    "marq1":"Respeto absoluto por el entorno",
+    "marq2":"Arquitectura sostenible CLT",
+    "marq3":"Acero galvanizado",
+    "marq4":"Epoxy marino",
+    "marq5":"Lujo silencioso",
+    "man.eyebrow":"Manifiesto",
+    "man.h1":"No buscamos un operador.",
+    "man.h2":"Buscamos un guardián.",
+    "man.p1":"Tras desarrollar íntegramente el proyecto de La Porcada —desde la topografía hasta el último perno de acero galvanizado— ha llegado el momento de elegir quién respirará vida sobre esta estructura. Y la respuesta, después de analizar el mercado, solo tiene un nombre: <strong>Aman</strong>.",
+    "man.p2":"No es una cuestión de prestigio. Es una cuestión de coherencia. Amanera, el resort que Aman explota en República Dominicana, ya demostró que el trópico acepta —y celebra— una forma de hospitalidad donde la naturaleza no se domestica, se reverencia. La Porcada, en Isla Porcada (Chiriquí, Panamá), encaja en esa misma narrativa como un anillo al dedo.",
+    "reasons.eyebrow":"Las diez razones",
+    "reasons.h1":"Por qué Aman debe ser",
+    "reasons.h2":"nuestro explotador.",
+    "r1.t":"Sinergia filosófica con el entorno",
+    "r1.s":"Principio rector compartido",
+    "r1.b":"Aman construye <em>solo donde la naturaleza lo permite</em>. En Amanera (República Dominicana), las villas se acoplan a la topografía en lugar de imponerse a ella. La Porcada nace del mismo principio: el terreno manda, la arquitectura obedece. Cualquier otro explotador exigiría explanar; Aman entendería por qué no lo hicimos.",
+    "r2.t":"Amanera validó el modelo tropical",
+    "r2.s":"Referente operativo vivo",
+    "r2.b":"El resort de Playa Grande, en República Dominicana, demostró que el lujo consciente funciona en el trópico. Tasa de ocupación premium, REVPAR superior al segmento, fidelidad de cliente recurrente. La Porcada hereda ese aprendizaje sin el coste del ensayo-error. El mercado ya está educado.",
+    "r3.t":"Lenguaje material compatible",
+    "r3.s":"CLT · Acero galvanizado · Epoxy",
+    "r3.b":"Aman usa madera, piedra y acero como lenguaje. Nuestras tres patas del tamburete —CLT estructural, acero galvanizado contra el salitre, epoxy marino protector— conversan con esa misma estética material. No hay que disfrazar nada: lo que construimos es exactamente lo que Aman mostraría.",
+    "r4.t":"Cliente que paga por silencio",
+    "r4.s":"Perfil Aman = perfil La Porcada",
+    "r4.b":"El huésped Aman no busca animación, busca ausencia de ruido. Paga por la discreción, por el espacio, por la posibilidad de no ver a otro huésped durante una semana. La Porcada, con su isla virgen de acceso restringido y su baja densidad, está construida para ese mismo cliente.",
+    "r5.t":"Acceso a una red global cautiva",
+    "r5.s":"Distribución inmediata",
+    "r5.b":"Aman cuenta con una base de clientes recurrentes que viajan entre sus 34 propiedades. Un nuevo destino no se lanza al vacío: se ofrece a quienes ya esperan la siguiente apertura. La Porcada entraría en circulación el día uno con demanda preexistente.",
+    "r6.t":"Operación de clase mundial",
+    "r6.s":"Estándar no negociable",
+    "r6.b":"La marca La Porcada puede construir la mejor infraestructura de Panamá, pero sin un operador de primer nivel, la experiencia se diluye en el día a día. Aman garantiza que el huésped reciba lo que promete el edificio. Sin esa traducción, el activo pierde valor.",
+    "r7.t":"Respeto por la baja densidad",
+    "r7.s":"Anti-megaresort por convicción",
+    "r7.b":"Donde otros operadores exigen 300 llaves para rentabilizar, Aman opera propiedades íntimas. La Porcada, con su huella deliberadamente pequeña, no podría tolerar la presión de un operador masivo. Aman es de los pocos que puede hacer rentable la contención.",
+    "r8.t":"Narrativa de turismo regenerativo",
+    "r8.s":"Más allá de lo sostenible",
+    "r8.b":"Aman no se queda en \"no dañar\": deja el lugar mejor de lo que lo encontró. La Porcada, con su construcción en CLT (carbono negativo), su acero galvanizado reciclable y su epoxy libre de VOCs, ofrece el cuerpo físico para que esa narrativa sea verdad y no greenwashing.",
+    "r9.t":"Valorización del activo a largo plazo",
+    "r9.s":"Marca como activo patrimonial",
+    "r9.b":"Un edificio explotado por Aman se revaloriza con el tiempo, no se deprecia. La marca se convierte en garantía colateral. Para Takyma Investment Pioneer, ceder la explotación a Aman significa transformar un activo inmobiliario en un activo de marca, líquido y transferible.",
+    "r10.t":"Es la única opción coherente",
+    "r10.s":"Conclusión lógica",
+    "r10.b":"Si revisamos las diez razones anteriores, ninguna apunta a otro operador. La combinación de respeto ambiental, lenguaje material sostenible, cliente silencioso y rentabilidad en baja densidad solo cierra con Aman. Cualquier otra elección sería un compromiso. Y La Porcada no nació para comprometerse.",
+    "aq.eyebrow":"El precedente · Amanera · República Dominicana",
+    "aq.q1":"« En Amanera, el edificio no se impone al acantilado:",
+    "aq.q2":"lo habita.",
+    "aq.q3":"Esa es exactamente la vocación de La Porcada en Panamá. »",
+    "aq.cta":"Ver Amanera (R. Dominicana)",
+    "aq.cta2":"Ver La Porcada (Panamá)",
+    "pil.eyebrow":"Las tres patas del tamburete",
+    "pil.h1":"Construcción sostenible,",
+    "pil.h2":"no decorativa.",
+    "clt.t":"Cross-Laminated Timber",
+    "clt.b":"Madera estructural de carbono negativo. Cada metro cuadrado de CLT secuestra CO₂ en lugar de emitirlo. La estructura respira con el clima, no lo combate. Es el esqueleto que Aman reconocería como propio.",
+    "clt.tag":"−1.6 t CO₂ / m²",
+    "st.t":"Acero galvanizado en caliente",
+    "st.b":"El salitre del Pacífico panameño corroe todo lo que toca. El galvanizado en caliente garantiza cincuenta años de integridad estructural sin mantenimiento agresivo. Hueso industrial, piel eterna.",
+    "st.tag":"50+ años de vida útil",
+    "ep.t":"Recubrimiento epoxy",
+    "ep.b":"Barrera química libre de VOCs, impermeable a la humedad, resistente a UV. Protege el acero, sella las juntas, garantiza la higiene. La tercera pata que convierte un detalle técnico en estándar Aman.",
+    "ep.tag":"0 VOC · 100% estanqueidad",
+    "pil.close":"« Tres materiales, tres principios, una sola promesa: lo que se construye aquí, durará. »",
+    "vis.eyebrow":"La Porcada · Isla Porcada · Chiriquí · Panamá",
+    "vis.h":"Donde el bosque se encuentra con el mar,<br/><em class=\"italic\" style=\"color:var(--bronze-light);\">y la arquitectura se rinde.</em>",
+    "close.eyebrow":"Cierre",
+    "close.h1":"Hemos construido el cuerpo.",
+    "close.h2":"Aman, ponle el alma.",
+    "close.p":"La Porcada está lista. El CLT está cortado, el acero galvanizado, el epoxy curado. Solo falta quien sepa habitarlo. Y ese nombre, lo sabemos desde el primer plano, siempre fue Aman.",
+    "foot.tag":"Investment Pioneer",
+    "foot.l1":"Isla Porcada · Chiriquí",
+    "foot.l2":"Panamá",
+    "foot.motto":"« La naturaleza no se domestica, se reverencia. »"
+  },
+  en: {
+    "hero.eyebrow":"Operating proposal · 2026",
+    "hero.sub":"When nature dictates architecture, luxury finds its most honest form.",
+    "hero.loc1":"Panama",
+    "hero.loc2":"Isla Porcada · Chiriquí",
+    "hero.tag":"« Ten reasons to entrust exploitation to the right guardian »",
+    "marq1":"Absolute respect for the environment",
+    "marq2":"Sustainable CLT architecture",
+    "marq3":"Galvanized steel",
+    "marq4":"Marine epoxy",
+    "marq5":"Silent luxury",
+    "man.eyebrow":"Manifesto",
+    "man.h1":"We are not looking for an operator.",
+    "man.h2":"We are looking for a guardian.",
+    "man.p1":"After fully developing the La Porcada project —from topography to the last galvanized steel bolt— the time has come to choose who will breathe life into this structure. And the answer, after analyzing the market, has only one name: <strong>Aman</strong>.",
+    "man.p2":"It is not a matter of prestige. It is a matter of coherence. Amanera, the resort Aman operates in the Dominican Republic, already proved that the tropics accept —and celebrate— a form of hospitality where nature is not domesticated, but revered. La Porcada, on Isla Porcada (Chiriquí, Panama), fits that same narrative like a ring on a finger.",
+    "reasons.eyebrow":"The ten reasons",
+    "reasons.h1":"Why Aman should be",
+    "reasons.h2":"our operator.",
+    "r1.t":"Philosophical synergy with the environment",
+    "r1.s":"Shared guiding principle",
+    "r1.b":"Aman builds <em>only where nature allows it</em>. At Amanera (Dominican Republic), villas adapt to the topography instead of imposing on it. La Porcada is born from the same principle: the land commands, architecture obeys. Any other operator would demand grading; Aman would understand why we did not.",
+    "r2.t":"Amanera validated the tropical model",
+    "r2.s":"Living operational benchmark",
+    "r2.b":"The Playa Grande resort, in the Dominican Republic, proved that conscious luxury works in the tropics. Premium occupancy rate, REVPAR above segment, recurring customer loyalty. La Porcada inherits that learning without the cost of trial and error. The market is already educated.",
+    "r3.t":"Compatible material language",
+    "r3.s":"CLT · Galvanized steel · Epoxy",
+    "r3.b":"Aman uses wood, stone and steel as language. Our three legs of the stool —structural CLT, galvanized steel against salt spray, protective marine epoxy— converse with that same material aesthetic. Nothing needs disguising: what we build is exactly what Aman would show.",
+    "r4.t":"A client who pays for silence",
+    "r4.s":"Aman profile = La Porcada profile",
+    "r4.b":"The Aman guest is not looking for entertainment, but for the absence of noise. They pay for discretion, for space, for the possibility of not seeing another guest for a week. La Porcada, with its restricted-access virgin island and low density, is built for that same client.",
+    "r5.t":"Access to a captive global network",
+    "r5.s":"Immediate distribution",
+    "r5.b":"Aman has a recurring customer base that travels among its 34 properties. A new destination is not launched into a void: it is offered to those already waiting for the next opening. La Porcada would enter circulation on day one with preexisting demand.",
+    "r6.t":"World-class operation",
+    "r6.s":"Non-negotiable standard",
+    "r6.b":"The La Porcada brand can build the best infrastructure in Panama, but without a top-tier operator, the experience dilutes day by day. Aman guarantees the guest receives what the building promises. Without that translation, the asset loses value.",
+    "r7.t":"Respect for low density",
+    "r7.s":"Anti-mega-resort by conviction",
+    "r7.b":"Where other operators demand 300 keys to be profitable, Aman operates intimate properties. La Porcada, with its deliberately small footprint, could not tolerate the pressure of a mass operator. Aman is one of the few who can make restraint profitable.",
+    "r8.t":"Regenerative tourism narrative",
+    "r8.s":"Beyond sustainable",
+    "r8.b":"Aman does not stop at \"do no harm\": it leaves the place better than it found it. La Porcada, with its CLT construction (negative carbon), recyclable galvanized steel and VOC-free epoxy, offers the physical body for that narrative to be true and not greenwashing.",
+    "r9.t":"Long-term asset valorization",
+    "r9.s":"Brand as patrimonial asset",
+    "r9.b":"A building operated by Aman appreciates over time, it does not depreciate. The brand becomes collateral guarantee. For Takyma Investment Pioneer, ceding operation to Aman means transforming a real estate asset into a brand asset, liquid and transferable.",
+    "r10.t":"It is the only coherent option",
+    "r10.s":"Logical conclusion",
+    "r10.b":"If we review the previous ten reasons, none point to another operator. The combination of environmental respect, sustainable material language, silent client and profitability in low density only closes with Aman. Any other choice would be a compromise. And La Porcada was not born to compromise.",
+    "aq.eyebrow":"The precedent · Amanera · Dominican Republic",
+    "aq.q1":"« At Amanera, the building does not impose itself on the cliff:",
+    "aq.q2":"it inhabits it.",
+    "aq.q3":"That is exactly the vocation of La Porcada in Panama. »",
+    "aq.cta":"View Amanera (Dominican Rep.)",
+    "aq.cta2":"View La Porcada (Panama)",
+    "pil.eyebrow":"The three legs of the stool",
+    "pil.h1":"Sustainable construction,",
+    "pil.h2":"not decorative.",
+    "clt.t":"Cross-Laminated Timber",
+    "clt.b":"Negative-carbon structural wood. Every square meter of CLT sequesters CO₂ instead of emitting it. The structure breathes with the climate, it does not fight it. It is the skeleton Aman would recognize as its own.",
+    "clt.tag":"−1.6 t CO₂ / m²",
+    "st.t":"Hot-dip galvanized steel",
+    "st.b":"The salt spray of the Panamanian Pacific corrodes everything it touches. Hot-dip galvanizing guarantees fifty years of structural integrity without aggressive maintenance. Industrial bone, eternal skin.",
+    "st.tag":"50+ years lifespan",
+    "ep.t":"Epoxy coating",
+    "ep.b":"VOC-free chemical barrier, impervious to moisture, UV resistant. Protects the steel, seals the joints, guarantees hygiene. The third leg that turns a technical detail into an Aman standard.",
+    "ep.tag":"0 VOC · 100% waterproof",
+    "pil.close":"« Three materials, three principles, one promise: what is built here will last. »",
+    "vis.eyebrow":"La Porcada · Isla Porcada · Chiriquí · Panama",
+    "vis.h":"Where the forest meets the sea,<br/><em class=\"italic\" style=\"color:var(--bronze-light);\">and architecture surrenders.</em>",
+    "close.eyebrow":"Closing",
+    "close.h1":"We have built the body.",
+    "close.h2":"Aman, give it a soul.",
+    "close.p":"La Porcada is ready. The CLT is cut, the steel galvanized, the epoxy cured. Only missing is the one who knows how to inhabit it. And that name, we have known since the first blueprint, was always Aman.",
+    "foot.tag":"Investment Pioneer",
+    "foot.l1":"Isla Porcada · Chiriquí",
+    "foot.l2":"Panama",
+    "foot.motto":"« Nature is not domesticated, it is revered. »"
+  }
+};
+
+let currentLang = 'es';
+
+function applyLanguage(lang){
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(translations[lang][key] !== undefined){
+      el.innerHTML = translations[lang][key];
+    }
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+});
+
+/* ============ VIDEO FADER — 9s LOOP ============ */
+const video = document.getElementById('heroVideo');
+const fadeMask = document.getElementById('fadeMask');
+
+const LOOP_DURATION = 9;
+const FADE_DURATION = 1.2;
+
+function startVideoLoop(){
+  if(!video) return;
+
+  video.currentTime = 0;
+  const playPromise = video.play();
+  if(playPromise !== undefined){
+    playPromise.catch(() => {
+      document.addEventListener('click', () => video.play(), { once:true });
+    });
+  }
+
+  fadeMask.style.transition = `opacity ${FADE_DURATION}s ease-in-out`;
+  requestAnimationFrame(() => {
+    fadeMask.style.opacity = '0';
+  });
+
+  video.addEventListener('timeupdate', () => {
+    const total = video.duration || LOOP_DURATION;
+    const window = Math.min(LOOP_DURATION, total);
+    if(video.currentTime >= window - 0.05){
+      video.currentTime = 0;
+      setTimeout(() => {
+        fadeMask.style.opacity = '0';
+      }, 200);
+    }
+    if(video.currentTime >= window - FADE_DURATION && fadeMask.style.opacity !== '1'){
+      fadeMask.style.opacity = '1';
+    }
+  });
+}
+
+window.addEventListener('load', startVideoLoop);
+window.addEventListener('DOMContentLoaded', startVideoLoop);
+
+/* ============ REVEAL ON SCROLL ============ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold:0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ============ INIT ============ */
+applyLanguage('es');
+</script>
+</body>
+</html>
